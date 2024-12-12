@@ -10,7 +10,7 @@ return {
 		null_ls.setup({
 			sources = {
 				null_ls.builtins.formatting.stylua,
-				null_ls.builtins.formatting.prettierd.with({
+				null_ls.builtins.formatting.prettier.with({
 					env = {
 						PRETTIERD_DEFAULT_CONFIG = vim.fn.expand(
 							"~/.config/nvim/utils/prettier-config/.prettierrc.json"
@@ -21,6 +21,6 @@ return {
 			},
 		})
 
-		vim.keymap.set("n", "<leader>mp", vim.lsp.buf.format, {})
+		vim.keymap.set("n", "<leader>fd", vim.lsp.buf.format, {})
 	end,
 }

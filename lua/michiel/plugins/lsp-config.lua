@@ -43,7 +43,7 @@ return {
          })
          lspconfig.html.setup({
             capabilities = capabilities,
-            filetypes = { "html", "ejs" },
+            filetypes = { "html", "ejs", "phpactor", },
          })
          lspconfig.jsonls.setup({
             capabilities = capabilities,
@@ -55,6 +55,9 @@ return {
             capabilities = capabilities,
          })
          lspconfig.ts_ls.setup({
+            capabilities = capabilities,
+         })
+         lspconfig.phpactor.setup({
             capabilities = capabilities,
          })
 
