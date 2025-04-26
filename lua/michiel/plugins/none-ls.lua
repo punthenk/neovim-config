@@ -11,16 +11,14 @@ return {
 			sources = {
 				null_ls.builtins.formatting.stylua,
 				null_ls.builtins.formatting.prettier.with({
-					env = {
-						PRETTIERD_DEFAULT_CONFIG = vim.fn.expand(
-							"~/.config/nvim/utils/prettier-config/.prettierrc.json"
-						),
-					},
+					extra_args = { "--config", vim.fn.expand("~/.config/nvim/utils/prettier-config/.prettierrc.json") },
 				}),
-				require("none-ls.diagnostics.eslint_d"),
+				null_ls.builtins.diagnostics.eslint_d, -- Correcte import
 			},
 		})
 
-		vim.keymap.set("n", "<leader>fd", vim.lsp.buf.format, {})
+		vim.keymap.set("n", "<leader>fd", function()
+			vim.lsp.buf.format({ async = true })
+		end, {})
 	end,
 }
