@@ -12,18 +12,18 @@ return {
       auto_install = true,
     },
     config = function()
-    	require("mason-lspconfig").setup({
-    		ensure_installed = {
-    			"lua_ls",
-    			"csharp_ls",
-    			"cssls",
-    			"html",
-    			"jsonls",
-    			"sqlls",
-    			"eslint",
+      require("mason-lspconfig").setup({
+        ensure_installed = {
+          "lua_ls",
+          "csharp_ls",
+          "cssls",
+          "html",
+          "jsonls",
+          "sqlls",
+          "eslint",
           "phpactor",
-    		},
-    	})
+        },
+      })
     end,
   },
   {
@@ -65,9 +65,15 @@ return {
           ["language_server_phpstan.enabled"] = false,
           ["language_server_psalm.enabled"] = false,
         },
-        filetypes = { "php", "html" }
+        filetypes = { "php", "html" },
       })
-
+      lspconfig.clangd.setup({
+        on_attach = on_attach,
+        on_attach = function(client, bufnr)
+          client.server_capabilities.signatureHelpProvider = false
+        end,
+        capabilities = capabilities,
+      })
 
       vim.keymap.set("n", "K", vim.lsp.buf.hover, {}, { desc = "Show the things of the keyword" })
       vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
