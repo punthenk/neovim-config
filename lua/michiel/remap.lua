@@ -1,6 +1,6 @@
 vim.g.mapleader = " "
 
-vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
+-- vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
 
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
@@ -49,3 +49,24 @@ vim.keymap.set("n", "<leader>mr", "<cmd>CellularAutomaton make_it_rain<CR>")
 vim.keymap.set("n", "<leader><leader>", function()
 	vim.cmd("so")
 end)
+
+local function toggle_diagnostics_display()
+    local current_config = vim.diagnostic.config()
+    local is_enabled = current_config.virtual_text ~= false
+    
+    if is_enabled then
+        vim.diagnostic.config({ virtual_text = false })
+    else
+        vim.diagnostic.config({
+            virtual_text = {
+                source = "always",
+                format = function (diagnostic)
+                    return string.format("%s: %s", diagnostic.source, diagnostic.message)
+                end,
+            }
+        })
+    end
+    
+end
+
+vim.keymap.set("n", "<leader>e", toggle_diagnostics_display)

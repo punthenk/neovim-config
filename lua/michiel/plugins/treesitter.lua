@@ -6,7 +6,7 @@ return {
 
     config = function()
         require 'nvim-treesitter.configs'.setup {
-            ensure_installed = {"lua", "javascript", "html", "css" },
+            ensure_installed = { "lua", "javascript", "html", "css" },
 
             -- Install parsers synchronously (only applied to `ensure_installed`)
             sync_install = false,
@@ -18,7 +18,14 @@ return {
             highlight = {
                 enable = true,
                 additional_vim_regex_highlighting = false,
+
+            },
+            indent = {
+                enable = true
             },
         }
+        --
+        -- }
+        -- vim.opt.smartindent = false
     end
 }
