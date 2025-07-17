@@ -2,7 +2,7 @@ vim.g.mapleader = " "
 vim.opt.nu = true
 vim.opt.relativenumber = true
 
-vim.opt.guicursor = ""
+-- vim.opt.guicursor = ""
 
 vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
@@ -28,7 +28,7 @@ vim.opt.signcolumn = "yes"
 vim.opt.isfname:append("@-@")
 
 vim.opt.updatetime = 50
-vim.opt.cursorline = true
+vim.opt.cursorline = false
 
 vim.opt.updatetime = 50
 vim.opt.colorcolumn = "100"

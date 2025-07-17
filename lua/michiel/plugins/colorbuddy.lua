@@ -1,4 +1,4 @@
-return {
+local colorscheme = {
     "tjdevries/colorbuddy.nvim",
 
     config = function()
