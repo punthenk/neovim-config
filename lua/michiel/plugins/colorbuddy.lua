@@ -5,3 +5,4 @@ local colorscheme = {
         vim.cmd.colorscheme("gruvbuddy")
     end
 }
+return {}
