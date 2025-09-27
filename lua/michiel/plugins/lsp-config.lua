@@ -28,17 +28,40 @@ return {
 
         config = function()
             local capabilities = require("cmp_nvim_lsp").default_capabilities()
-            local lspconfig = require("lspconfig")
 
-            lspconfig.lua_ls.setup({
+            local on_attach = function(client, bufnr)
+                local opts = { buffer = bufnr, silent = true }
+                vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+                vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+                vim.keymap.set("n", "rn", vim.lsp.buf.rename, opts)
+                vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
+            end
+
+            local defaults = {
                 on_attach = on_attach,
                 capabilities = capabilities,
+            }
 
+            local servers = {
+                "csharp_ls",
+                "csharp_ls",
+                "cssls",
+                "tailwindcss",
+                "jsonls",
+                "sqlls",
+                "eslint",
+                "tsserver",
+            }
+
+            for _, server in ipairs(servers) do
+                vim.lsp.enable(server)
+            end
+
+            -- lua_ls met extra instellingen
+            vim.lsp.config["lua_ls"] = vim.tbl_deep_extend("force", defaults, {
                 settings = {
                     Lua = {
-                        diagnostics = {
-                            globals = { "vim" },
-                        },
+                        diagnostics = { globals = { "vim" } },
                         workspace = {
                             library = {
                                 [vim.fn.expand("$VIMRUNTIME/lua")] = true,
@@ -53,51 +76,31 @@ return {
                     },
                 },
             })
-            lspconfig.csharp_ls.setup({
-                capabilities = capabilities,
-            })
-            lspconfig.cssls.setup({
-                capabilities = capabilities,
-            })
-            lspconfig.tailwindcss.setup({
-                capabilities = capabilities,
-            })
-            lspconfig.html.setup({
+            vim.lsp.enable("lua_ls")
+
+            vim.lsp.config["html"] = {
                 capabilities = capabilities,
                 filetypes = { "html", "php", "blade", },
-            })
-            lspconfig.jsonls.setup({
-                capabilities = capabilities,
-            })
-            lspconfig.sqlls.setup({
-                capabilities = capabilities,
-            })
-            lspconfig.eslint.setup({
-                capabilities = capabilities,
-            })
-            lspconfig.ts_ls.setup({
-                capabilities = capabilities,
-            })
-            lspconfig.phpactor.setup({
-                on_attach = on_attach,
+            }
+            vim.lsp.enable("html")
+
+            vim.lsp.config["phpactor"] = vim.tbl_deep_extend("force", defaults, {
                 init_options = {
                     ["language_server_phpstan.enabled"] = false,
                     ["language_server_psalm.enabled"] = false,
                 },
-                filetypes = { "php", "html", "blade", },
+                filetypes = { "php", "html", "blade" },
             })
-            lspconfig.clangd.setup({
-                on_attach = on_attach,
+            vim.lsp.enable("phpactor")
+
+            -- clangd met override
+            vim.lsp.config["clangd"] = vim.tbl_deep_extend("force", defaults, {
                 on_attach = function(client, bufnr)
                     client.server_capabilities.signatureHelpProvider = false
+                    on_attach(client, bufnr) -- wel je eigen mappings nog meegeven
                 end,
-                capabilities = capabilities,
             })
-
-            vim.keymap.set("n", "K", vim.lsp.buf.hover)
-            vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
-            vim.keymap.set("n", "rn", vim.lsp.buf.rename, {})
-            vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
+            vim.lsp.enable("clangd")
         end,
     },
 
