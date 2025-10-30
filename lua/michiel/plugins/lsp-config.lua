@@ -43,14 +43,14 @@ return {
             }
 
             local servers = {
-                "csharp_ls",
-                "csharp_ls",
+                -- "csharp_ls",
                 "cssls",
                 "tailwindcss",
                 "jsonls",
                 "sqlls",
                 "eslint",
-                "tsserver",
+                "ts_ls",
+                "intelephense",
             }
 
             for _, server in ipairs(servers) do
@@ -61,7 +61,10 @@ return {
             vim.lsp.config["lua_ls"] = vim.tbl_deep_extend("force", defaults, {
                 settings = {
                     Lua = {
-                        diagnostics = { globals = { "vim" } },
+                        diagnostics = {
+                            globals = { "vim" },
+                            disable = { "lowercase-global" }
+                        },
                         workspace = {
                             library = {
                                 [vim.fn.expand("$VIMRUNTIME/lua")] = true,
@@ -84,14 +87,19 @@ return {
             }
             vim.lsp.enable("html")
 
-            vim.lsp.config["phpactor"] = vim.tbl_deep_extend("force", defaults, {
-                init_options = {
-                    ["language_server_phpstan.enabled"] = false,
-                    ["language_server_psalm.enabled"] = false,
-                },
-                filetypes = { "php", "html", "blade" },
-            })
-            vim.lsp.enable("phpactor")
+            vim.lsp.config["rust_analyzer"] = {
+                capabilities = capabilities,
+            }
+            vim.lsp.enable("rust_analyzer")
+
+            -- vim.lsp.config["phpactor"] = vim.tbl_deep_extend("force", defaults, {
+            --     init_options = {
+            --         ["language_server_phpstan.enabled"] = false,
+            --         ["language_server_psalm.enabled"] = false,
+            --     },
+            --     filetypes = { "php", "html", "blade" },
+            -- })
+            -- vim.lsp.enable("phpactor")
 
             -- clangd met override
             vim.lsp.config["clangd"] = vim.tbl_deep_extend("force", defaults, {
@@ -104,4 +112,19 @@ return {
         end,
     },
 
+    -- Formatting
+    {
+        "stevearc/conform.nvim",
+        event = { "BufReadPre", "BufNewFile" },
+        config = function()
+            require("conform").setup({
+                formatters_by_ft = {
+                    javascript = { "prettierd" },
+                    typescript = { "prettierd" },
+                    lua = { "stylua" },
+                    php = { "pint" },
+                },
+            })
+        end,
+    }
 }

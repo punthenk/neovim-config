@@ -37,6 +37,8 @@ return {
         }),
         sources = cmp.config.sources({
           { name = "nvim_lsp" },
+            { name = 'laravel' },
+            { name = 'buffer' },
           { name = "luasnip" }, -- For luasnip users.
         }, {
           { name = "buffer" },

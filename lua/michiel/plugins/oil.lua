@@ -20,7 +20,11 @@ return {
                     -- Toon alleen bestanden/mappen die beginnen met een punt (behalve '..')
                     return vim.startswith(name, ".")
                 end,
-            }
+            },
+            sort = {
+                { "type", "asc" },  -- eerst directories
+                { "extension", "asc" }, -- dan files op extensie
+            },
         })
 
         vim.keymap.set("n", "-", "<CMD>Oil<CR>")
