@@ -9,7 +9,7 @@ return {
         opts = {
             ensure_installed = {
                 "lua_ls",
-                "csharp_ls",
+                -- "csharp_ls",
                 "cssls",
                 "html",
                 "jsonls",
@@ -51,9 +51,13 @@ return {
                 "eslint",
                 "ts_ls",
                 "intelephense",
+                -- "vue-language-server",
             }
 
             for _, server in ipairs(servers) do
+                vim.lsp.config[server] = {
+                    defaults
+                }
                 vim.lsp.enable(server)
             end
 
@@ -83,7 +87,7 @@ return {
 
             vim.lsp.config["html"] = {
                 capabilities = capabilities,
-                filetypes = { "html", "php", "blade", },
+                filetypes = { "html", "php", "blade", "vue" },
             }
             vim.lsp.enable("html")
 
