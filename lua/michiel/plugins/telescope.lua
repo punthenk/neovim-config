@@ -1,27 +1,3 @@
--- return {
--- 	'nvim-telescope/telescope.nvim',
--- 	dependencies = { 'nvim-lua/plenary.nvim' },
---
--- 	config = function()
---     local telescope = require('telescope')
---     local builtin = require('telescope.builtin')
---
---     telescope.setup({
---       defaults = {
---         file_ignore_patterns = {
---           "node_modules",
---           "vendor",
---           "storage",
---           ".git/",
---           "public/storage",
---         },
---       }
---     })
--- 		vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })
--- 		vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' })
--- 	end
--- }
-
 return {
     'nvim-telescope/telescope.nvim',
     dependencies = {
@@ -37,8 +13,6 @@ return {
         telescope.setup({
             defaults = {
                 prompt_prefix = '  ',
-                selection_caret = ' ',
-                entry_prefix = '  ',
                 sorting_strategy = 'ascending',
                 layout_strategy = 'horizontal',
                 layout_config = {
@@ -121,7 +95,7 @@ return {
                     fuzzy = true,
                     override_generic_sorter = true,
                     override_file_sorter = true,
-                    case_mode = "smart_case",
+                    -- case_mode = "smart_case",
                 },
             },
         })
