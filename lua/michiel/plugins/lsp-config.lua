@@ -9,18 +9,17 @@ return {
         opts = {
             ensure_installed = {
                 "lua_ls",
-                -- "csharp_ls",
+                -- "csharp_ls", Can give some errors
                 "cssls",
                 "html",
                 "jsonls",
                 "sqlls",
                 "eslint",
-                "phpactor",
+                -- "phpactor",
+                "intelephense",
+                -- "rust_analyzer",
             },
         },
-        config = function()
-        end,
-
     },
     {
         "neovim/nvim-lspconfig",
@@ -43,25 +42,24 @@ return {
             }
 
             local servers = {
-                -- "csharp_ls",
+                "csharp_ls",
                 "cssls",
                 "tailwindcss",
                 "jsonls",
                 "sqlls",
-                "eslint",
+                -- "eslint",
                 "ts_ls",
                 "intelephense",
-                -- "vue-language-server",
+                -- "rust_analyzer",
+                "html",
+                "clangd",
             }
 
             for _, server in ipairs(servers) do
-                vim.lsp.config[server] = {
-                    defaults
-                }
+                vim.lsp.config[server] = defaults
                 vim.lsp.enable(server)
             end
 
-            -- lua_ls met extra instellingen
             vim.lsp.config["lua_ls"] = vim.tbl_deep_extend("force", defaults, {
                 settings = {
                     Lua = {
@@ -91,25 +89,20 @@ return {
             }
             vim.lsp.enable("html")
 
-            vim.lsp.config["rust_analyzer"] = {
-                capabilities = capabilities,
-            }
-            vim.lsp.enable("rust_analyzer")
-
-            -- vim.lsp.config["phpactor"] = vim.tbl_deep_extend("force", defaults, {
-            --     init_options = {
-            --         ["language_server_phpstan.enabled"] = false,
-            --         ["language_server_psalm.enabled"] = false,
-            --     },
-            --     filetypes = { "php", "html", "blade" },
-            -- })
+            vim.lsp.config["phpactor"] = vim.tbl_deep_extend("force", defaults, {
+                init_options = {
+                    ["language_server_phpstan.enabled"] = false,
+                    ["language_server_psalm.enabled"] = false,
+                },
+                filetypes = { "php", "html", "blade" },
+            })
             -- vim.lsp.enable("phpactor")
 
             -- clangd met override
             vim.lsp.config["clangd"] = vim.tbl_deep_extend("force", defaults, {
                 on_attach = function(client, bufnr)
                     client.server_capabilities.signatureHelpProvider = false
-                    on_attach(client, bufnr) -- wel je eigen mappings nog meegeven
+                    on_attach(client, bufnr)
                 end,
             })
             vim.lsp.enable("clangd")
