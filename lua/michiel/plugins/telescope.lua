@@ -1,5 +1,6 @@
 return {
     'nvim-telescope/telescope.nvim',
+    lazy = false,
     dependencies = {
         'nvim-lua/plenary.nvim',
         { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
@@ -7,8 +8,6 @@ return {
     },
     config = function()
         local telescope = require('telescope')
-        local builtin = require('telescope.builtin')
-        local actions = require('telescope.actions')
 
         telescope.setup({
             defaults = {
@@ -56,20 +55,18 @@ return {
                 },
                 mappings = {
                     i = {
-                        ['<C-j>'] = actions.move_selection_next,
-                        ['<C-k>'] = actions.move_selection_previous,
-                        ['<Down>'] = actions.move_selection_next,
-                        ['<Up>'] = actions.move_selection_previous,
-                        ['<C-q>'] = actions.smart_send_to_qflist + actions.open_qflist,
-                        ['<C-x>'] = actions.delete_buffer,
-                        ['<Esc>'] = actions.close,
+                        ['<C-j>'] = 'move_selection_next',
+                        ['<C-k>'] = 'move_selection_previous',
+                        ['<Down>'] = 'move_selection_next',
+                        ['<Up>'] = 'move_selection_previous',
+                        ['<C-x>'] = 'delete_buffer',
+                        ['<Esc>'] = 'close',
                     },
                     n = {
-                        ['<C-q>'] = actions.smart_send_to_qflist + actions.open_qflist,
-                        ['<C-x>'] = actions.delete_buffer,
-                        ['q'] = actions.close,
+                        ['q'] = 'close',
                     },
                 },
+
             },
             pickers = {
                 find_files = {
@@ -83,11 +80,6 @@ return {
                 },
                 buffers = {
                     sort_lastused = true,
-                    mappings = {
-                        i = {
-                            ['<c-d>'] = actions.delete_buffer,
-                        },
-                    },
                 },
             },
             extensions = {
@@ -100,13 +92,34 @@ return {
             },
         })
 
-        telescope.load_extension('fzf')
+        pcall(telescope.load_extension, 'fzf')
+        -- local builtin = require('telescope.builtin')
 
         -- Keymaps
-        vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Find files' })
-        vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Live grep' })
-        vim.keymap.set('n', '<leader>fw', builtin.grep_string, { desc = 'Find word under cursor' })
-        vim.keymap.set('n', '<leader>fc', builtin.commands, { desc = 'Commands' })
-        vim.keymap.set('n', '<leader>fs', builtin.git_status, { desc = 'Git status' })
+        -- vim.keymap.set('n', '<leader>ff', builtin.find_files)
+        -- vim.keymap.set('n', '<leader>fg', builtin.live_grep)
+        -- vim.keymap.set('n', '<leader>fw', builtin.grep_string)
+        -- vim.keymap.set('n', '<leader>fc', builtin.commands)
+        -- vim.keymap.set('n', '<leader>fs', builtin.git_status)
+
+        vim.keymap.set('n', '<leader>ff', function()
+            require('telescope.builtin').find_files()
+        end)
+
+        vim.keymap.set('n', '<leader>fg', function()
+            require('telescope.builtin').live_grep()
+        end)
+
+        vim.keymap.set('n', '<leader>fw', function()
+            require('telescope.builtin').grep_string()
+        end)
+
+        vim.keymap.set('n', '<leader>fc', function()
+            require('telescope.builtin').commands()
+        end)
+
+        vim.keymap.set('n', '<leader>fs', function()
+            require('telescope.builtin').git_status()
+        end)
     end
 }
