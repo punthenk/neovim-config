@@ -1,32 +1,32 @@
 return {
     {
         "mason-org/mason.nvim",
+        lazy = false,
         opts = {}
     },
     {
         "mason-org/mason-lspconfig.nvim",
         lazy = false,
+        dependencies = {
+            "mason-org/mason.nvim",
+        },
         opts = {
-            ensure_installed = {
-                "lua_ls",
-                -- "csharp_ls", Can give some errors
-                "cssls",
-                "html",
-                "jsonls",
-                "sqlls",
-                "eslint",
-                -- "phpactor",
-                "intelephense",
-                -- "rust_analyzer",
-            },
+            ensure_installed = {},
         },
     },
     {
         "neovim/nvim-lspconfig",
         lazy = false,
+        dependencies = {
+            "mason.nvim",
+            "mason-lspconfig.nvim",
+            "hrsh7th/nvim-cmp",
+        },
 
         config = function()
-            local capabilities = require("cmp_nvim_lsp").default_capabilities()
+            local has_cmp, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+            local capabilities = has_cmp and cmp_nvim_lsp.default_capabilities()
+                or vim.lsp.protocol.make_client_capabilities()
 
             local on_attach = function(client, bufnr)
                 local opts = { buffer = bufnr, silent = true }
@@ -42,17 +42,10 @@ return {
             }
 
             local servers = {
-                "csharp_ls",
                 "cssls",
                 "tailwindcss",
-                "jsonls",
-                "sqlls",
-                -- "eslint",
                 "ts_ls",
                 "intelephense",
-                -- "rust_analyzer",
-                "html",
-                "clangd",
             }
 
             for _, server in ipairs(servers) do
@@ -89,13 +82,13 @@ return {
             }
             vim.lsp.enable("html")
 
-            vim.lsp.config["phpactor"] = vim.tbl_deep_extend("force", defaults, {
-                init_options = {
-                    ["language_server_phpstan.enabled"] = false,
-                    ["language_server_psalm.enabled"] = false,
-                },
-                filetypes = { "php", "html", "blade" },
-            })
+            -- vim.lsp.config["phpactor"] = vim.tbl_deep_extend("force", defaults, {
+            --     init_options = {
+            --         ["language_server_phpstan.enabled"] = false,
+            --         ["language_server_psalm.enabled"] = false,
+            --     },
+            --     filetypes = { "php", "html", "blade" },
+            -- })
             -- vim.lsp.enable("phpactor")
 
             -- clangd met override
