@@ -4,10 +4,11 @@ vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 
 vim.keymap.set("n", "J", "mzJ`z") -- keeps cursor at normal pos when J
-vim.keymap.set("n", "<C-d>", "<C-d>zz")
-vim.keymap.set("n", "<C-u>", "<C-u>zz")
+-- vim.keymap.set("n", "<C-d>", "<C-d>zz")
+-- vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set({ "n", "v", "x" }, "<leader>y", '"+y')
 vim.keymap.set({ "n", "v", "x" }, "<leader>p", '"+p')
+vim.keymap.set("n", "<C-l>", ":nohl<CR>")
 
 -- greatest remap ever
 vim.keymap.set("x", "<leader>p", [["_dP]]) -- Keeps latest yank in buffer
